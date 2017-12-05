@@ -1,14 +1,18 @@
 class Captcha
-  module Match
-    def self.next(numbers)
-      numbers[0...-1].select.with_index do |num, index|
-        num == numbers[index+1]
-      end
-    end
+  def self.calculate(input:, pattern: :next)
+    Match.send(pattern, input.chars.collect(&:to_i)).reduce(0,:+)
+  end
+end
+
+module Match
+  def self.next(numbers)
+    equal(step:1, list:numbers)
   end
 
-  def self.sum(list)
-    numbers = Array(list[-1].to_i) + list.chars.collect(&:to_i)
-    Match.next(numbers).reduce(0,:+)
+  def self.equal(step:,list:)
+    reference = list.dup
+    list.select do |number|
+      number == reference.rotate!(step)[0]
+    end
   end
 end
