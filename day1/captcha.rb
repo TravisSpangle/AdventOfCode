@@ -9,10 +9,13 @@ module Match
     equal(step:1, list:numbers)
   end
 
+  def self.half(numbers)
+    equal(step: numbers.length/2, list:numbers)
+  end
+
   def self.equal(step:,list:)
-    reference = list.dup
-    list.select do |number|
-      number == reference.rotate!(step)[0]
+    list.select.with_index do |number,index|
+      number == list.rotate(step+index)[0]
     end
   end
 end
